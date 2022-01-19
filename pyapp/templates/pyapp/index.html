@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+	<head>
+	   <meta charset="utf-8">
+	   <title>Nopal Systems Inc.</title>
+	</head>
+	<body>
+		{%if usuarios %}
+			<ul>
+			    {%for user in usuarios%}
+				<li><a href="{% url 'login:usuarios' user.id%}">{{user.username}}</a></li>
+			    {%endfor%}
+			</ul>
+		{%else%}
+			<p>No hay usuarios que mostrar</p>
+		{%endif%}
+		<h3>Designed by: Lemi </h3>
+	</body>
+</html>

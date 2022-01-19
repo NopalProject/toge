@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+	<head>
+	   <meta charset="utf-8">
+	   <title>{{ django|title }}</title>
+	</head>
+	<body>
+		<form action="/" method="post">
+		{% csrf_token %}
+			<label for="username" name="Username or emailaddress"/>
+				Username:
+			</label>
+			<input type="text" placeholder="Enter your username, phone or emailadress" name="username"/>
+			<label for="password" value=="Password"/>
+				Password: 
+			</label>
+			<input type="password" placeholder="Enter your password" name="password/>"
+		</form>
+		<h3>Designed by: Lemi </h3>
+	</body>
+</html>
