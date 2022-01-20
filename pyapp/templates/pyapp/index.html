@@ -14,6 +14,8 @@
 		{%else%}
 			<p>No hay usuarios que mostrar</p>
 		{%endif%}
+		<p><a href="{% url 'pyapp:new-user' %}">Registrar Nuevo Usuario</a>
+		&emsp;<a href="{% url 'pyapp:login' %}">Iniciar Sesión</a></p>
 		<h3>Designed by: Lemi </h3>
 	</body>
 </html>

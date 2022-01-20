@@ -5,7 +5,7 @@
 	   <title>{{ django|title }}</title>
 	</head>
 	<body>
-		<form action="{% url 'pyapp:login_attempt' %}" method="post">
+		<form action="{% url 'pyapp:register_action' %}" method="post">
 		{% csrf_token %}
 			<label for="username" name="Username or emailaddress"/>
 				Username:
@@ -15,7 +15,7 @@
 				Password: 
 			</label>
 			<input type="password" placeholder="Enter your password" name="password"/>
-			<input type="submit" value="Iniciar Sesión"/>
+			<input type="submit" value="Registrar"/>
 		</form>
 		<h3>Designed by: Lemi </h3>
 	</body>
