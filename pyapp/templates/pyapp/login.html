@@ -1,22 +1,20 @@
-<!DOCTYPE html>
-<html>
-	<head>
-	   <meta charset="utf-8">
-	   <title>{{ django|title }}</title>
-	</head>
-	<body>
-		<form action="{% url 'pyapp:login_attempt' %}" method="post">
-		{% csrf_token %}
-			<label for="username" name="Username or emailaddress"/>
-				Username:
-			</label>
-			<input type="text" placeholder="Enter your username, phone or emailadress" name="username"/>
-			<label for="password" value=="Password"/>
-				Password: 
-			</label>
-			<input type="password" placeholder="Enter your password" name="password"/>
-			<input type="submit" value="Iniciar Sesión"/>
-		</form>
-		<h3>Designed by: Lemi </h3>
-	</body>
-</html>
+{%extends './layout.html'%}
+{%block content%}
+<form action="{% url 'pyapp:login_attempt'%}" method="post">
+  {% csrf_token %}
+  <div class="form-group">
+    <label for="exampleInputEmail1">Email address</label>
+    <input type="text" class="form-control" name="username" aria-describedby="emailHelp" placeholder="Enter email">
+    <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
+  </div>
+  <div class="form-group">
+    <label for="exampleInputPassword1">Password</label>
+    <input type="password" class="form-control" name="password" placeholder="Password">
+  </div>
+  <div class="form-group form-check">
+    <input type="checkbox" class="form-check-input" id="exampleCheck1">
+    <label class="form-check-label" for="exampleCheck1">Check me out</label>
+  </div>
+  <button type="submit" class="btn btn-primary">Submit</button>
+</form>
+{% endblock %}
