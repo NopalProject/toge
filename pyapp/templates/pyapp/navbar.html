@@ -1,8 +1,9 @@
-<nav class="navbar navbar-light bg-light">
+<nav class="navbar navbar-expand-md navbar-light bg-secondary">
   <div class="container-fluid">
-    <a class="navbar-brand" href="#">
-      <i data-feather="coffee" style="width: 60px;"></i><span class="ps-2">My App</span></a>
-   <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <a class="navbar-brand d-inline" href="{%url 'pyapp:index'%}">
+      <i data-feather="coffee" style="width: 60px;"></i>
+<span class="ps-2">My App</span></a>
+  <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
@@ -10,31 +11,47 @@
         <li class="nav-item">
           <a class="nav-link active" aria-current="page" href="#">
             <i data-feather="home"></i>
-            Home</a>
+            <span>Home</span></a>
         </li>
         <li class="nav-item">
           <a class="nav-link" href="#">
             <i data-feather="users"></i>
             Public events</a>
         </li>
+{%if logged_in %}
         <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-	    <i data-feather="user"></i> Account
+	    <i data-feather="user"></i>{{uname}}
           </a>
           <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
             <li><a class="dropdown-item" href="#"><i data-feather="calendar"></i> My 
 Calendar</a></li>
-            <li><a class="dropdown-item" href="#"><i data-feather="book"></i>My Notes</a></li>
+            <li><a class="dropdown-item" href="{% url 'pyapp:my_notes'%}"><i data-feather="book"></i>
+My Notes</a></li>
             <li><a class="dropdown-item" href="#">
               <i data-feather="settings"></i>
               Settings</a></li>
+            <li><a class="dropdown-item" href="{%url 'pyapp:logout_action'%}">
+              <i data-feather="log-out"></i>
+              Log out</a></li>
+{% else %}
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            <i data-feather="user"></i><span>Not logged in</span>
+          </a>
+          <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+            <li><a class="dropdown-item" href="{%url 'pyapp:login'%}">
+             <i data-feather="log-in"></i>Login</a></li>
+	     <li class="ps-4"><small class="text-muted">Don't have an account?</small></li>
+            <li><a class="dropdown-item" href="{%url 'pyapp:new-user'%}">
+             <i data-feather="user-plus"></i>Register</a></li>
+{% endif %}
             <li><hr class="dropdown-divider"></li>
             <li><div class="dropdown-item">
 <!-- boton modo oscuro -->
-             <i data-feather="sun" class="d-inline"></i>
-              <div class="form-check form-switch py-0 d-inline-block">
- <!--               <label class="form-check-label" for="flexSwitchCheckDefault"></label>-->
-                <input class="form-check-input" type="checkbox" id="flexSwitchCheckDefault" onchange="mo()">
+             <i data-feather="sun" class="d-inline me-2"></i>
+              <div class="form-check form-switch d-inline-block">
+                <input class="form-check-input float-none" style="margin-top: 0.35em" type="checkbox" id="flexSwitchCheckDefault" onchange="mo()">
               </div>
               <div class="d-inline-block"><i data-feather="moon"></i></div>
             </div></li>
@@ -43,12 +60,12 @@ Calendar</a></li>
         <li class="nav-item">
           <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">
             <i data-feather="bar-chart-2"></i>
-            Administration Panel</a>
+            Admin Panel</a>
         </li>
       </ul>
       <form class="d-flex">
         <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-        <button class="btn btn-outline-success" type="submit">Search</button>
+        <button class="btn btn-success" type="submit"><i data-feather="search"></i></button>
       </form>
     </div>
   </div>

@@ -1,5 +1,12 @@
 <!doctype html>
 <html lang="en">
+{% load define_action %}
+{% comment 'check if session is active' %}
+{% endcomment %}
+{% if 'logged_in' in request.session %}
+  {% define True as logged_in %}
+  {% define request.session.logged_in as uname %}
+{% endif %}
   <head>
     <!-- Required meta tags -->
     <meta charset="utf-8">
@@ -15,19 +22,13 @@
   <body onload="dm()">
     {%include './navbar.html'%}
     <div class="container">
-    {% if 'logged_in' in request.session %}
-        <p>Iniciaste sesión como: {{request.session.logged_in}}</p>
-    {% endif %}
-    </div>
-    <div class="container">
         {% block content %}
 
         {% endblock %}
-    <p><a href="{% url 'pyapp:new-user' %}">Registrarse</a>
-    {% if 'logged_in' not in request.session %}
-        <p><a href="{% url 'pyapp:login' %}">Iniciar Sesión</a></p>
-    {% else %}
-        <p><a href="{%url 'pyapp:logout_action'%}">Cerrar Sesión</a></p>
+    {% if not logged_in %}
+<!--      <p><a href="{% url 'pyapp:login' %}">Iniciar Sesión</a></p>
+      <p><a href="{% url 'pyapp:new-user' %}">Registrarse</a>
+-->
     {% endif %}
     </div>
     <!-- Footer -->

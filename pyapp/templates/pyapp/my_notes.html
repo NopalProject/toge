@@ -1,0 +1,56 @@
+{% extends './layout.html' %}
+
+{% block content%}
+<div class="row">
+  <div class="col-sm-6 py-2">
+   <p>
+    <button class="btn btn-success" type="button" data-bs-toggle="collapse" data-bs-target="#newNote" aria-expanded="false" aria-controls="newNote">
+      <i data-feather="plus-circle"></i>
+      <span>New</span> </button>
+    <button class="btn btn-primary disabled" type="button"><i data-feather="check-circle"></i>
+      <span>Select All</span></button>
+     </p>
+    <form class="collapse" id="newNote">
+      <div class="col-sm-6 py-2">
+    <div class="card">
+      <div class="card-header">
+        <input type="text" placeholder="Title" name="noteTitle">
+      </div>
+      <div class="card-body">
+        <p class="card-text">
+          <textarea type="text" name="noteBody" placeholder="Write your note here"></textarea></p>
+        <a href="#" class="btn btn-primary"><i data-feather="save"></i>
+          <span> Save </span></a>
+        <a href="#" class="btn btn-danger"><i data-feather="x-circle"></i>
+          <span>Delete</span></a>
+      </div>
+    </div>
+  </div>
+    </div>
+  </form>
+{%if notes%}
+{%for note in notes %}
+  <div class="col-sm-6 py-2">
+    <div class="card" id="{{id}}">
+      <div class="card-header">
+        {{note.noteTitle}}
+      </div>
+      <div class="card-body">
+        <p class="card-text">
+          {{note.noteBody}}</p>
+        <a href="#" class="btn btn-primary"><i data-feather="edit-2"></i>
+          <span> Edit </span></a>
+	<a href="#" class="btn btn-danger"><i data-feather="x-circle"></i>
+          <span>Delete</span></a>
+      </div>
+      <div class="card-footer text-muted">
+        Created on: {{note.noteCreatedDate}}
+      </div>
+    </div>
+  </div>
+{%endfor%}
+{%endif%}
+</div>
+
+<script>feather.replace();</script>
+{%endblock%}

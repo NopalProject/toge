@@ -4,7 +4,7 @@ from django.template import loader
 from django.urls import reverse
 from django.utils import timezone
 
-from .models import User
+from .models import User, Note
 
 # Create your views here.
 def login(request):
@@ -16,12 +16,12 @@ def login(request):
     else:
         return HttpResponse(index_template.render(context, request))
 def index(request):
-    usuarios = User.objects.order_by('id')[:5]
+    usuarios = User.objects.order_by('id')
     template = loader.get_template('pyapp/index.html')
     context = {'usuarios': usuarios}
     return HttpResponse(template.render(context, request))
 def userlist(request, num):
-    return HttpResponse("Total de usuario %s." % num)
+    return HttpResponse("ID de usuario." % num)
 def register(request):
     template = loader.get_template('pyapp/register.html')
     context = {'title':'Nuevo Usuario'}
@@ -37,12 +37,25 @@ def register_action(request):
 def login_attempt(request):
     uname = request.POST['username']
     pwd = request.POST['password']
-    tmp_Usr = User.objects.get(username = uname)
-    if tmp_Usr.username == uname and tmp_Usr.password == pwd:
-        request.session['logged_in']=uname
-        return HttpResponseRedirect(reverse('pyapp:index', args=()))
+    try:
+        tmp_Usr = User.objects.get(username = uname)
+        if tmp_Usr.username == uname and tmp_Usr.password == pwd:
+            request.session['logged_in']=uname
+            request.session.set_expiry(0)
+            return HttpResponseRedirect(reverse('pyapp:index', args=()))
+        else:
+            return HttpResponse('<script>alert("Revisa los datos introducidos");</script>')
+    except:
+        return HttpResponse('<script>alert("Revisa los datos");</script>')
     else:
-        return HttpResponse('<script>alert("Revisa los datos introducidos");</script>')
+        return render(request, 'pyapp/login.html')
 def logout_action(request):
     del request.session['logged_in']
     return HttpResponseRedirect(reverse('pyapp:index', args=()))
+def my_notes(request):
+    notes = Note.objects.order_by('id')
+    template = loader.get_template('pyapp/my_notes.html')
+    context = {'notes':notes}
+#    return HttpResponseRedirect(reverse('pyapp:my_notes', args=()))
+    return HttpResponse(template.render(context, request))
+
