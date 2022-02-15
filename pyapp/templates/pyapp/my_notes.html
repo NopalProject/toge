@@ -1,6 +1,7 @@
 {% extends './layout.html' %}
 
 {% block content%}
+{%load static%}
 <div class="row">
   <div class="col-sm-6 py-2">
    <p>
@@ -10,16 +11,19 @@
     <button class="btn btn-primary disabled" type="button"><i data-feather="check-circle"></i>
       <span>Select All</span></button>
      </p>
-    <form class="collapse" id="newNote">
+    <form class="collapse" id="newNote" method="POST">
+     {% csrf_token %}
       <div class="col-sm-6 py-2">
     <div class="card">
       <div class="card-header">
-        <input type="text" placeholder="Title" name="noteTitle">
+        <input class="w-100" type="text" placeholder="Title" name="noteTitle" maxlength="50">
       </div>
       <div class="card-body">
         <p class="card-text">
-          <textarea type="text" name="noteBody" placeholder="Write your note here"></textarea></p>
-        <a href="#" class="btn btn-primary"><i data-feather="save"></i>
+          <label for="floatingTextarea" class="text-muted">Write your note down Here</label>
+          <div class="overflow-auto form-control" contenteditable="true" aria-multiline="true" id="floatingTextArea"></div>
+        </p>
+        <a href="#" class="btn btn-primary" id="saveNewNote"><i data-feather="save"></i>
           <span> Save </span></a>
         <a href="#" class="btn btn-danger"><i data-feather="x-circle"></i>
           <span>Delete</span></a>
@@ -27,6 +31,7 @@
     </div>
   </div>
     </div>
+   <div class="newAjaxNote"></div>
   </form>
 {%if notes%}
 {%for note in notes %}
@@ -51,6 +56,8 @@
 {%endfor%}
 {%endif%}
 </div>
-
+<script type="text/javascript" src="https://code.jquery.com/jquery-3.6.0.js"></script>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/js-cookie@2/src/js.cookie.min.js"></script>
+<script type="text/javascript" src="{%static 'pyapp/new_note.js'%}"></script>
 <script>feather.replace();</script>
 {%endblock%}

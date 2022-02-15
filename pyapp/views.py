@@ -1,4 +1,4 @@
-from django.http import HttpResponse, HttpResponseRedirect
+from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from django.shortcuts import render, redirect
 from django.template import loader
 from django.urls import reverse
@@ -7,6 +7,9 @@ from django.utils import timezone
 from .models import User, Note
 
 # Create your views here.
+def is_ajax(request):
+  return request.META.get('HTTP_X_REQUESTED_WITH') == 'XMLHttpRequest'
+
 def login(request):
     login_template = loader.get_template('pyapp/login.html')
     index_template = loader.get_template('pyapp/index.html')
@@ -20,8 +23,14 @@ def index(request):
     template = loader.get_template('pyapp/index.html')
     context = {'usuarios': usuarios}
     return HttpResponse(template.render(context, request))
-def userlist(request, num):
-    return HttpResponse("ID de usuario." % num)
+def ajax_test(request):
+    message="not ajax"
+    if is_ajax(request=request):
+      new_note = {
+        'title':request.POST.get('noteTitle'),
+        'body':request.POST.get('noteBody')
+      }
+    return JsonResponse(new_note)
 def register(request):
     template = loader.get_template('pyapp/register.html')
     context = {'title':'Nuevo Usuario'}
