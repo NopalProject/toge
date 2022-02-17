@@ -3,58 +3,62 @@
 {% block content%}
 {%load static%}
 <div class="row">
-  <div class="col-sm-6 py-2">
+ <div class="col-sm-6 py-3 w-auto">
    <p>
     <button class="btn btn-success" type="button" data-bs-toggle="collapse" data-bs-target="#newNote" aria-expanded="false" aria-controls="newNote">
       <i data-feather="plus-circle"></i>
-      <span>New</span> </button>
+      <span>New</span>
+    </button>
     <button class="btn btn-primary disabled" type="button"><i data-feather="check-circle"></i>
-      <span>Select All</span></button>
-     </p>
-    <form class="collapse" id="newNote" method="POST">
+      <span>Select All</span>
+    </button>
+    <button class="btn btn-secondary" id="refreshNotes"><i data-feather="refresh-ccw"></i></button>
+   </p>
+   <form class="collapse" id="newNote" method="POST">
      {% csrf_token %}
-      <div class="col-sm-6 py-2">
-    <div class="card">
+    <div class="col-sm-6 py-2">
+     <div class="card">
       <div class="card-header">
-        <input class="w-100" type="text" placeholder="Title" name="noteTitle" maxlength="50">
-      </div>
-      <div class="card-body">
-        <p class="card-text">
-          <label for="floatingTextarea" class="text-muted">Write your note down Here</label>
-          <div class="overflow-auto form-control" contenteditable="true" aria-multiline="true" id="floatingTextArea"></div>
-        </p>
-        <a href="#" class="btn btn-primary" id="saveNewNote"><i data-feather="save"></i>
-          <span> Save </span></a>
-        <a href="#" class="btn btn-danger"><i data-feather="x-circle"></i>
+        <input class="w-100" type="text" placeholder="Title" name="noteTitle" maxlength="50" id="noteTitle"/>
+     </div>
+     <div class="card-body">
+       <p class="card-text">
+        <label  class="text-muted">Write your note down Here</label>
+        <div class="overflow-auto form-control" contenteditable="true" aria-multiline="true" id="noteBody"></div>
+       </p>
+       <a href="#" class="btn btn-primary" id="saveNewNote"><i data-feather="save"></i>
+        <span> Save </span></a>
+       <a href="#" class="btn btn-danger"><i data-feather="x-circle"></i>
           <span>Delete</span></a>
-      </div>
+     </div>
     </div>
   </div>
-    </div>
-   <div class="newAjaxNote"></div>
-  </form>
+ </form>
+<div id="savedNotes">
 {%if notes%}
 {%for note in notes %}
   <div class="col-sm-6 py-2">
     <div class="card" id="{{id}}">
-      <div class="card-header">
+     <div class="card-header">
         {{note.noteTitle}}
-      </div>
+     </div>
       <div class="card-body">
         <p class="card-text">
           {{note.noteBody}}</p>
         <a href="#" class="btn btn-primary"><i data-feather="edit-2"></i>
           <span> Edit </span></a>
-	<a href="#" class="btn btn-danger"><i data-feather="x-circle"></i>
+        <a href="#" class="btn btn-danger"><i data-feather="x-circle"></i>
           <span>Delete</span></a>
       </div>
       <div class="card-footer text-muted">
         Created on: {{note.noteCreatedDate}}
       </div>
-    </div>
-  </div>
+   </div>
+ </div>
 {%endfor%}
 {%endif%}
+  </div>
+</div>
 </div>
 <script type="text/javascript" src="https://code.jquery.com/jquery-3.6.0.js"></script>
 <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/js-cookie@2/src/js.cookie.min.js"></script>

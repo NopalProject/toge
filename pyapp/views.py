@@ -3,6 +3,7 @@ from django.shortcuts import render, redirect
 from django.template import loader
 from django.urls import reverse
 from django.utils import timezone
+from django.core import serializers
 
 from .models import User, Note
 
@@ -24,13 +25,22 @@ def index(request):
     context = {'usuarios': usuarios}
     return HttpResponse(template.render(context, request))
 def ajax_test(request):
-    message="not ajax"
-    if is_ajax(request=request):
-      new_note = {
-        'title':request.POST.get('noteTitle'),
-        'body':request.POST.get('noteBody')
-      }
-    return JsonResponse(new_note)
+  message="not ajax"
+  if is_ajax(request=request):
+    '''Python dictionary to temporary store data'''
+    new_note = {
+      'title':request.POST.get('noteTitle'),
+      'body':request.POST.get('noteBody'),
+      'uname':request.session['logged_in']
+    }
+    try:
+      u = User.objects.get(username=new_note['uname'])
+      n = Note(noteTitle=new_note['title'], noteBody=new_note['body'], enabled=True, userId=u)
+      n.save()
+    except Exception as e:
+      return JsonResponse({'msg':str(e)})
+    else:
+      return JsonResponse({'msg':'success'})
 def register(request):
     template = loader.get_template('pyapp/register.html')
     context = {'title':'Nuevo Usuario'}
@@ -62,9 +72,12 @@ def logout_action(request):
     del request.session['logged_in']
     return HttpResponseRedirect(reverse('pyapp:index', args=()))
 def my_notes(request):
-    notes = Note.objects.order_by('id')
-    template = loader.get_template('pyapp/my_notes.html')
-    context = {'notes':notes}
-#    return HttpResponseRedirect(reverse('pyapp:my_notes', args=()))
+  notes = Note.objects.order_by('id')
+  template = loader.get_template('pyapp/my_notes.html')
+  context = {'notes':notes}
+#return HttpResponseRedirect(reverse('pyapp:my_notes', args=()))
+  if is_ajax(request=request):
+    notes_Json=serializers.serialize('json',notes)
+    return JsonResponse(notes_Json, safe=False)
+  else:
     return HttpResponse(template.render(context, request))
-
