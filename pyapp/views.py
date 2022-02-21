@@ -50,7 +50,7 @@ def register_action(request):
         nuevoUsuario = User(username=request.POST['username'], password=request.POST['password'], fechaCreacion=timezone.now())
         nuevoUsuario.save()
     except (KeyError):
-        return HttpResponseRedirect(reverse('pyapp:registrar', args=()))
+        return HttpResponseRedirect(reverse('pyapp:login', args=()))
     else:
         return HttpResponseRedirect(reverse('pyapp:index', args=()))
 def login_attempt(request):

@@ -1,11 +1,10 @@
-/*$('#saveNewNote').click(function(){
-$.get("/pyapp/ajax_test/",
-  function(data){
-    alert(data);
-  });
-});*/
 const csrftoken= Cookies.get('csrftoken');
-
+//Borrar el cont de la nueva nota
+function dropNewNote(){
+  $('input[type=text]#noteTitle').val('');
+  $('#noteBody').html('');
+}
+//actualiza las notas mostradas en pantalla
 function actualizar(){
   $.ajax({
     method: "POST",
@@ -13,12 +12,8 @@ function actualizar(){
     url: '/my_notes/',
   }).done(function(data){
     jsdata=JSON.parse(data);
-  //  alert(jsdata[1].fields['noteTitle']);
     var notes = ``;
     for(var n in jsdata){
-//      alert(jsdata[n].fields['noteBody']);
-//    alert(notes);
-//    notes+=`<div class="col-sm-6 py-2"><div class="card" id="${jsdata[n].>
 notes += `<div class="col-sm-6 py-2">
   <div class="card" id="${jsdata[n].fields['userId']}">
     <div class="card-header">${jsdata[n].fields['noteTitle']}</div>
@@ -35,19 +30,18 @@ notes += `<div class="col-sm-6 py-2">
   </div>
 </div>`;
     }
-//$('#savedNotes').html('');
-$('#savedNotes').html(notes);
-feather.replace();
-//alert('si c pudo');
+    $('#savedNotes').html(notes);
+    feather.replace();
   });
 }
+
+//metodos
+$('#dropNewNote').click(dropNewNote);
 
 $('#refreshNotes').click(actualizar);
 
 
 $('#saveNewNote').click(function(){
-//  alert(1);
-//alert(csrftoken);
 $.ajax({
   method: "POST",
   headers: {'X-CSRFToken':csrftoken},
@@ -56,7 +50,9 @@ $.ajax({
   dataType: "json"
 }).done(function(){
   alert("datos guardados correctamente");
+  dropNewNote();
   actualizar();
+  $('#newNote').attr('class','collapse');
 }).fail(function(data){
   alert("Oops, something went wrong");
   alert(data.msg);
